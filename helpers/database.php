@@ -1,5 +1,7 @@
 <?php
 
+
+
 class Database {
 
     const servername = "localhost";
@@ -10,13 +12,15 @@ class Database {
     public static $table;
     public $id;
 
-  
+    
 
     protected static function connect() {
         try {
             $conn = new PDO("mysql:host=" . self::servername . ";dbname=" . self::database, self::username, self::password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            echo "Connexion active";
+            
             return $conn;
         } catch(PDOException $e) {
             echo $e->getMessage();

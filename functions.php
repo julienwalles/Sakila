@@ -17,15 +17,7 @@ function template_header($title) {
       <nav class="navtop">
         <div>
           <h1></h1>
-              <a href="auth_read.php">Home</a>
-              <a href="rayon.php">Rayon</a>
-          
-              <a href="catalogue_r.php">Catalogue</a>
-              
-              <a href="">Emprunts</a>
-            
-              <a href="adherent.php">Adhérents</a>
-              
+              <a href="index.php">Accueil</a>                      
         </div>
       </nav>
   EOT;

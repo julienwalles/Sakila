@@ -19,7 +19,7 @@ if($currentPage <= 0)
 	}
 
 $count = (int)$pdo->query("SELECT COUNT(film_id) 
-						   FROM film")->fetch(PDO::FETCH_NUM)[0];
+						   FROM film_category")->fetch(PDO::FETCH_NUM)[0];
 $perPage = 10;
 $pages = ceil($count / $perPage);
 
@@ -29,14 +29,14 @@ if($currentPage > $pages)
 	}	
 
 $offset = $perPage * ($currentPage - 1);
-$query = $pdo->query ("SELECT film.film_id, film.title, film.description, film.release_year, 
-					film.special_features, category.name
-					FROM film
-					LEFT JOIN film_category
-					ON film.film_id = film_category.film_id
-					LEFT JOIN category
-					ON category.category_id = film_category.category_id
-					LIMIT $perPage OFFSET $offset");
+$query = $pdo->query(" SELECT film.film_id, film.title, film.description, film.release_year, 
+						film.special_features, category.name
+						FROM film
+						LEFT JOIN film_category
+						ON film.film_id = film_category.film_id
+						LEFT JOIN category
+						ON category.category_id = film_category.category_id
+						WHERE film_category.category_id = $id");
 
 $films = $query->fetchAll();
 
@@ -58,8 +58,7 @@ $films = $query->fetchAll();
 						<?php
         $categories = Category::all(); foreach($categories as $category) :  ?>
 						<li>
-							<a class="link-dark"
-								href="filmByCategory.php?id=<?php echo $category["category_id"] ?>"><?php echo $category["name"]; ?></a>
+							<a class="link-dark" href="filmByCategory.php?id=<?php echo $category["category_id"] ?>"><?php echo $category["name"]; ?></a>
 						</li>
 						<?php endforeach ; ?>
 					</ol>
@@ -69,36 +68,37 @@ $films = $query->fetchAll();
 				<div class="p-3 border bg-info">
 					<h3>Films</h3>
 					<div class="row">
-						<?php
-        foreach($films as $film) : ?>
-						<div class="card" style="width: 18rem;">
+						<?php $id = $_GET["id"];
+        $films = Film::findByCategory($id); foreach($films as $film) : ?>
+						<div class="card col-5 ">
 							<div class="card-body">
 								<h5 class="card-title"><?php echo $film["title"]?></h5>
 								<h6 class="card-subtitle mb-2 text-muted"><?php echo $film["special_features"]?></h6>
-								<h6 class="card-subtitle mb-2 text-muted"><?php echo $film["name"]?></h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><?php echo $film["name"]?></h6>
 								<p class="card-text"><?php echo $film["description"]?></p>
-								<a href="film.show.php?id=<?php echo $film["film_id"] ?> " class="btn btn-secondary">Voir
-									plus</a>
+								<a href="film.show.php?id=<?php echo $film["film_id"] ?> " class="card-link">Voir plus</a>
 							</div>
 						</div>
 						<?php endforeach ; ?>
 					</div>
-					<div class="d-flex justify-content-between my-4">
-						<?php if($currentPage > 1): ?>
-							<?php $link = './index.php';
-							if($currentPage > 2) $link .= '?page' . $currentPage - 1; ?>
-						<a href="<?= $link ?>" class="btn btn-primary ml-auto"> &laquo; Page
-							précédente </a>
-						<?php endif ?>
-
-						<?php if($currentPage < $pages): ?>
-						<a href="./index.php?page=<?= $currentPage + 1 ?>" class="btn btn-primary ml-auto"> Page suivante &raquo;
-						</a>
-						<?php endif ?>
-					</div>
 				</div>
 			</div>
 
+			<nav>
+				<ul class="pagination">
+					<li class="page-item <?= ($currentPage == 1) ? "disabled" : "" ?>">
+						<a href="./?page=<?= $currentPage - 1 ?>" class="page-link">Précédente</a>
+					</li>
+					<?php for($page = 1; $page <= $pages; $page++): ?>
+					<li class="page-item <?= ($currentPage == $page) ? "active" : "" ?>">
+						<a href="./?page=<?= $page ?>" class="page-link"><?= $page ?></a>
+					</li>
+					<?php endfor ?>
+					<li class="page-item <?= ($currentPage == $pages) ? "disabled" : "" ?>">
+						<a href="./?page=<?= $currentPage + 1 ?>" class="page-link">Suivante</a>
+					</li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 </section>
