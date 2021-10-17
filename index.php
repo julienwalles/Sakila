@@ -29,6 +29,7 @@ if($currentPage > $pages)
 	}	
 
 $offset = $perPage * ($currentPage - 1);
+
 $query = $pdo->query ("SELECT film.film_id, film.title, film.description, film.release_year, 
 					film.special_features, category.name
 					FROM film
@@ -48,7 +49,7 @@ $films = $query->fetchAll();
 	</div>
 </section>
 
-<section>
+<section class='content'>
 	<div class="container px-4">
 		<div class="row gx-5">
 			<div class="col-4">
@@ -98,7 +99,6 @@ $films = $query->fetchAll();
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </section>

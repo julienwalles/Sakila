@@ -19,7 +19,7 @@ class Database {
             $conn = new PDO("mysql:host=" . self::servername . ";dbname=" . self::database, self::username, self::password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            echo "Connexion active";
+            // echo "Connexion active";
             
             return $conn;
         } catch(PDOException $e) {

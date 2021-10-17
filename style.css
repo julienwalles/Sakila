@@ -10,6 +10,8 @@
   body {
     background-color: #ffffff;
     margin: 0;
+    height: 100%;
+    width: 100%;
   }
 
   .navtop,
@@ -18,10 +20,16 @@
     height: 60px;
     width: 100%;
     border: 0;
+
+  }
+
+  .navtop {
+    top: 0;
   }
 
   footer {
     margin-top: 50px;
+    bottom: 0;
   }
 
   footer p {
@@ -70,6 +78,7 @@
   .content {
     width: 1000px;
     margin: 0 auto;
+    overflow: hidden;
   }
   
   .content h2 {

@@ -9,13 +9,24 @@ require './classes/Customer.php' ;
 require './classes/Rental.php' ;
 
 echo template_header('Read');
+
+if($_POST['rent'])
+{
+    $customer_id = $_POST['customer_id'];
+    $inventory_id = $_POST['inventory_id'];
+    $rental_date = $_POST['rental_date'];
+    $staff_id = $_POST['staff_id'];
+
+    echo "<script> alert(Location effectuée) </script>";
+}
+
 ?>
 
 <section>
     <div class="container">
         <div class="row">
             <h1> Formulaire de location </h1>
-            <form method="POST" action="#">
+            <form method="POST">
                 <div class="row">
                     <div class="col-3">
                         <label for="customer" class="form-label">Customer</label>
@@ -57,12 +68,12 @@ echo template_header('Read');
 
                     <div class="col-3">                
                         <label for="film" class="form-label">Prix/jour (€)</label>
-                        <input type="text" name='inventory_id' class="form-control" id="film" value="<?php echo $films['rental_rate'] ?>" disabled>
+                        <input type="text" name='rental_rate' class="form-control" id="film" value="<?php echo $films['rental_rate'] ?>" disabled>
                     </div>
 
                     <div class="row">
                         <div class="btn-group col-4" role="group" aria-label="Basic example">
-                            <button type="submit" class="btn btn-primary">Louer</button>
+                            <button type="submit" class="btn btn-primary" name="rent">Louer</button>
                             <a href="./index.php" class="btn btn-secondary">Retour</a>
                         </div>
                     </div>
@@ -72,6 +83,4 @@ echo template_header('Read');
     </div>
 </section>
 
-<script>
-    
-</script>
+<?php echo template_header('Read'); ?>

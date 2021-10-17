@@ -7,39 +7,6 @@ require './classes/Film.php' ;
 
 echo template_header('Read'); 
 
-$pdo = new PDO("mysql:dbname=sakila;host=localhost", "root", "secret", [
-	PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-]);
-
-$currentPage = (int)($_GET['page'] ?? 1);
-
-if($currentPage <= 0)
-	{
-		throw new Exception('Numérode page invalide');
-	}
-
-$count = (int)$pdo->query("SELECT COUNT(film_id) 
-						   FROM film_category")->fetch(PDO::FETCH_NUM)[0];
-$perPage = 10;
-$pages = ceil($count / $perPage);
-
-if($currentPage > $pages)
-	{
-		throw new Exception("Cette page n'existe pas");
-	}	
-
-$offset = $perPage * ($currentPage - 1);
-$query = $pdo->query(" SELECT film.film_id, film.title, film.description, film.release_year, 
-						film.special_features, category.name
-						FROM film
-						LEFT JOIN film_category
-						ON film.film_id = film_category.film_id
-						LEFT JOIN category
-						ON category.category_id = film_category.category_id
-						WHERE film_category.category_id = $id");
-
-$films = $query->fetchAll();
-
 ?>
 
 <section>
@@ -83,22 +50,6 @@ $films = $query->fetchAll();
 					</div>
 				</div>
 			</div>
-
-			<nav>
-				<ul class="pagination">
-					<li class="page-item <?= ($currentPage == 1) ? "disabled" : "" ?>">
-						<a href="./?page=<?= $currentPage - 1 ?>" class="page-link">Précédente</a>
-					</li>
-					<?php for($page = 1; $page <= $pages; $page++): ?>
-					<li class="page-item <?= ($currentPage == $page) ? "active" : "" ?>">
-						<a href="./?page=<?= $page ?>" class="page-link"><?= $page ?></a>
-					</li>
-					<?php endfor ?>
-					<li class="page-item <?= ($currentPage == $pages) ? "disabled" : "" ?>">
-						<a href="./?page=<?= $currentPage + 1 ?>" class="page-link">Suivante</a>
-					</li>
-				</ul>
-			</nav>
 		</div>
 	</div>
 </section>
